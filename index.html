@@ -302,7 +302,15 @@ function renderList(){
     return`<div class="entry" onclick="openPlayer(${e.id})"><div class="entry-num">Op. ${nums[i]||i+1}</div><div class="entry-body"><p class="entry-text">${e.text}</p><div class="entry-meta"><span class="entry-date">${e.date} · ${e.time}</span>${tagH}<span class="entry-dur">${e.tag||'·'}</span></div></div><span class="entry-fav ${e.favorite?'active':''}" onclick="event.stopPropagation();toggleFav(${e.id})">♥</span></div>`;
   }).join('');
 }
-function toggleFav(id){const e=entries.find(x=>x.id===id);if(e){e.favorite=!e.favorite;renderList()}}
+function toggleFav(id){
+  const e=entries.find(x=>x.id===id);if(!e)return;
+  e.favorite=!e.favorite;renderList();
+  fetch(SUPA_API+'/chime_entries?id=eq.'+id,{
+    method:'PATCH',
+    headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+    body:JSON.stringify({favorite:e.favorite})
+  }).catch(()=>{});
+}
 
 function getActiveIdx(){
   if(!currentEntry||!currentEntry.lines)return 0;
@@ -419,7 +427,16 @@ function togglePlayerPlay(){
   }
 }
 function seekProgress(ev){if(!currentEntry||!audio||!audioReady)return;const rect=ev.currentTarget.getBoundingClientRect();const pct=(ev.clientX-rect.left)/rect.width;audio.currentTime=pct*audio.duration;progress=audio.currentTime;lastSubIdx=-1;updateSubtitle();updateActiveLyricFromTime();const pcFill=Math.min(pct*100,100);document.getElementById('progressFill').style.width=pcFill+'%';document.getElementById('timeCurrent').textContent=fmt(Math.floor(progress))}
-function togglePlayerFav(){if(!currentEntry)return;currentEntry.favorite=!currentEntry.favorite;document.getElementById('playerFav').className=`player-fav-btn ${currentEntry.favorite?'active':''}`}
+function togglePlayerFav(){
+  if(!currentEntry)return;
+  currentEntry.favorite=!currentEntry.favorite;
+  document.getElementById('playerFav').className='player-fav-btn '+(currentEntry.favorite?'active':'');
+  fetch(SUPA_API+'/chime_entries?id=eq.'+currentEntry.id,{
+    method:'PATCH',
+    headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+    body:JSON.stringify({favorite:currentEntry.favorite})
+  }).catch(()=>{});
+}
 function prevEntry(){const list=getFiltered();const idx=list.findIndex(e=>e.id===currentEntry.id);if(idx>0){cancelAnimationFrame(animFrame);isPlaying=false;progress=0;lastSubIdx=-1;currentEntry=list[idx-1];loadAudio(currentEntry);updatePlayer();renderLyrics();updateSubtitle()}}
 function nextEntry(){const list=getFiltered();const idx=list.findIndex(e=>e.id===currentEntry.id);if(idx<list.length-1){cancelAnimationFrame(animFrame);isPlaying=false;progress=0;lastSubIdx=-1;currentEntry=list[idx+1];loadAudio(currentEntry);updatePlayer();renderLyrics();updateSubtitle()}}
 
