@@ -4,46 +4,48 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Chime · voice archive</title>
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@300;400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Pinyon+Script&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%;overflow:hidden;touch-action:manipulation}
-body{background:linear-gradient(180deg,#FFFBFD 0%,#FFF5F8 40%,#F8E8EE 100%);color:#7B5B6B;font-family:"LXGW WenKai TC","PingFang SC",sans-serif;-webkit-font-smoothing:antialiased}
+body{background:linear-gradient(180deg,#0E0B1A 0%,#151030 40%,#100D22 100%);color:#D0C8E8;font-family:"LXGW WenKai TC","PingFang SC",sans-serif;-webkit-font-smoothing:antialiased}
 #bgParticles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
 .page{position:absolute;top:0;left:0;right:0;bottom:0;overflow-y:auto;transition:transform .4s cubic-bezier(.4,0,.2,1),opacity .4s ease;z-index:1}
 .page.hidden{transform:translateX(100%);opacity:0;pointer-events:none}
-.page.slide-left{transform:translateX(-20%);opacity:.2;pointer-events:none}
+.page.slide-left{transform:translateX(-100%);opacity:0;pointer-events:none;visibility:hidden}
 
 /* LIST */
 .list-header{display:flex;flex-direction:column;align-items:center;padding-top:52px}
-.list-logo{font-family:"Cormorant Garamond",serif;font-size:28px;font-weight:300;letter-spacing:14px;color:#B89AA8;text-transform:uppercase;margin-bottom:4px}
-.list-sub{font-size:11px;color:#D4B8C4;font-family:"Cormorant Garamond",serif;letter-spacing:3px;font-style:italic}
-.list-divider{width:40px;height:1px;background:linear-gradient(90deg,transparent,#E0C4D0,transparent);margin:20px auto 0}
+.list-logo{font-family:"Cormorant Garamond",serif;font-size:28px;font-weight:300;letter-spacing:14px;color:#8878A8;text-transform:uppercase;margin-bottom:4px}
+.list-sub{font-size:11px;color:#6860A0;font-family:"Cormorant Garamond",serif;letter-spacing:3px;font-style:italic}
+.list-divider{width:40px;height:1px;background:linear-gradient(90deg,transparent,#2A2548,transparent);margin:20px auto 0}
 .filters{display:flex;justify-content:center;gap:28px;margin:20px 0 8px}
-.filter-btn{background:none;border:none;cursor:pointer;color:#D4B8C4;font-size:11px;font-family:"Cormorant Garamond",serif;letter-spacing:3px;padding:4px 0;border-bottom:1px solid transparent;text-transform:uppercase;font-style:italic;transition:color .2s,border-color .2s}
-.filter-btn.active{color:#C48DA0;border-bottom-color:rgba(196,141,160,0.3)}
-.stats{text-align:center;margin:4px 0 14px;font-size:10px;color:#D4B8C4;font-family:"Cormorant Garamond",serif;letter-spacing:2px;font-style:italic}
+.filter-btn{background:none;border:none;cursor:pointer;color:#6860A0;font-size:11px;font-family:"Cormorant Garamond",serif;letter-spacing:3px;padding:4px 0;border-bottom:1px solid transparent;text-transform:uppercase;font-style:italic;transition:color .2s,border-color .2s}
+.filter-btn.active{color:#A890D0;border-bottom-color:rgba(196,141,160,0.3)}
+.stats{text-align:center;margin:4px 0 14px;font-size:10px;color:#6860A0;font-family:"Cormorant Garamond",serif;letter-spacing:2px;font-style:italic}
 .list{max-width:420px;margin:0 auto;padding:0 20px 80px}
 .entry{padding:16px 12px;margin-bottom:2px;display:flex;align-items:flex-start;gap:14px;cursor:pointer;border-radius:12px;transition:background .2s;border-left:2px solid transparent}
-.entry:active{background:rgba(224,184,200,0.08)}
-.entry-num{font-family:"Cormorant Garamond",serif;font-size:11px;font-style:italic;color:#D4B8C4;min-width:32px;padding-top:2px}
+.entry:active{background:rgba(120,100,180,0.08)}
+.entry-num{font-family:"Cormorant Garamond",serif;font-size:11px;font-style:italic;color:#6860A0;min-width:32px;padding-top:2px}
 .entry-body{flex:1;min-width:0}
-.entry-text{color:#7B5B6B;font-size:14px;line-height:1.6;font-family:"LXGW WenKai TC",serif;font-weight:300;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:4px}
+.entry-text{color:#7B5B6B;font-size:14px;line-height:1.6;font-family:"LXGW WenKai TC",serif;font-weight:300;color:#C8C0E0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:4px}
 .entry-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.entry-date{color:#C4A8B4;font-size:10px;font-family:"Cormorant Garamond",serif;letter-spacing:1px;font-style:italic}
+.entry-date{color:#5A5580;font-size:10px;font-family:"Cormorant Garamond",serif;letter-spacing:1px;font-style:italic}
 .entry-tag{font-size:9px;border-radius:10px;padding:1px 8px;font-family:"Cormorant Garamond",serif;font-style:italic;letter-spacing:1px}
-.entry-dur{color:#D4B8C4;font-size:10px;font-family:monospace;margin-left:auto}
-.entry-fav{color:rgba(200,160,176,0.2);font-size:14px;flex-shrink:0;margin-top:4px;cursor:pointer}
-.entry-fav.active{color:#E0A0B8}
-.list-footer{text-align:center;padding:30px 0 50px;font-size:10px;color:#E0CCD4;font-family:"Cormorant Garamond",serif;letter-spacing:2px;font-style:italic}
+.entry-dur{color:#6860A0;font-size:10px;font-family:monospace;margin-left:auto}
+.entry-fav{color:rgba(100,80,160,0.2);font-size:14px;flex-shrink:0;margin-top:4px;cursor:pointer}
+.entry-fav.active{color:#A888D8}
+.list-footer{text-align:center;padding:30px 0 50px;font-size:10px;color:#3A3560;font-family:"Cormorant Garamond",serif;letter-spacing:2px;font-style:italic}
 
 /* PLAYER */
-.player{display:flex;flex-direction:column;height:100vh;background:linear-gradient(180deg,#FFFBFD 0%,#FFF5F8 30%,#F8E8EE 100%)}
+.player{display:flex;flex-direction:column;height:100vh;background:transparent}
 .player-top{width:100%;display:flex;justify-content:space-between;align-items:center;padding:12px 24px;flex-shrink:0}
-.back-btn{background:none;border:none;color:#C4A8B4;font-size:24px;cursor:pointer;padding:8px;font-family:"Cormorant Garamond",serif;font-weight:300}
-.player-top-title{font-family:"Cormorant Garamond",serif;font-size:16px;font-weight:300;letter-spacing:8px;color:#C4A8B4;text-transform:uppercase}
-.player-fav-btn{background:none;border:none;font-size:18px;cursor:pointer;padding:8px;color:rgba(200,160,176,0.3);transition:color .2s}
-.player-fav-btn.active{color:#E0A0B8}
+.back-btn{background:none;border:none;color:#5A5580;font-size:24px;cursor:pointer;padding:8px;font-family:"Cormorant Garamond",serif;font-weight:300}
+.player-top-title{font-family:"Cormorant Garamond",serif;font-size:16px;font-weight:300;letter-spacing:8px;color:#5A5580;text-transform:uppercase}
+.player-fav-btn{background:none;border:none;font-size:18px;cursor:pointer;padding:8px;color:rgba(100,80,160,0.3);transition:color .2s}
+.player-fav-btn.active{color:#A888D8}
 
 .orb-area{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:0;overflow:hidden}
 
@@ -65,8 +67,8 @@ body{background:linear-gradient(180deg,#FFFBFD 0%,#FFF5F8 40%,#F8E8EE 100%);colo
   transition:opacity .4s ease,transform .4s ease;
   white-space:nowrap;
 }
-.sub-current{color:#7B5B6B;opacity:1}
-.sub-next{color:rgba(180,140,160,0.3);opacity:1;font-size:13px}
+.sub-current{color:#D0C8E8;opacity:1}
+.sub-next{color:rgba(100,85,140,0.3);opacity:1;font-size:13px}
 .sub-fade{opacity:0;transform:translateY(-6px)}
 
 /* lyrics view */
@@ -85,12 +87,12 @@ body{background:linear-gradient(180deg,#FFFBFD 0%,#FFF5F8 40%,#F8E8EE 100%);colo
 .lyric-line{
   font-family:"LXGW WenKai TC",serif;font-weight:300;
   font-size:13px;line-height:1.8;
-  color:rgba(180,140,160,0.25);
+  color:rgba(160,150,200,0.2);
   text-align:center;padding:14px 16px;
   transition:all .5s ease;max-width:280px;cursor:pointer;
 }
 .lyric-line.active{color:#7B5B6B;font-size:15px;transform:scale(1.03)}
-.lyric-line.near{color:rgba(180,140,160,0.45)}
+.lyric-line.near{color:rgba(200,190,230,0.4)}
 
 /* dots */
 .swipe-dots{display:flex;justify-content:center;gap:6px;padding:8px 0 4px;flex-shrink:0}
@@ -101,17 +103,17 @@ body{background:linear-gradient(180deg,#FFFBFD 0%,#FFF5F8 40%,#F8E8EE 100%);colo
 .player-controls{width:100%;max-width:340px;padding:4px 24px 32px;margin:0 auto;flex-shrink:0}
 .progress-area{width:100%;margin-bottom:14px}
 .progress-bar-bg{width:100%;height:2px;background:rgba(224,184,200,0.2);border-radius:2px;position:relative;cursor:pointer}
-.progress-bar-fill{height:100%;background:linear-gradient(90deg,#F0C8D8,#E0A0B8);border-radius:2px;width:0%;transition:width .1s linear;position:relative}
-.progress-dot{width:8px;height:8px;border-radius:50%;background:#E0A0B8;position:absolute;right:-4px;top:-3px;box-shadow:0 0 12px rgba(224,160,184,0.5)}
-.progress-times{display:flex;justify-content:space-between;margin-top:8px;font-size:10px;font-family:monospace;color:#D4B8C4}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,#6850A8,#8A70C8);border-radius:2px;width:0%;transition:width .1s linear;position:relative}
+.progress-dot{width:8px;height:8px;border-radius:50%;background:#8A70C8;position:absolute;right:-4px;top:-3px;box-shadow:0 0 12px rgba(130,100,200,0.6)}
+.progress-times{display:flex;justify-content:space-between;margin-top:8px;font-size:10px;font-family:monospace;color:#6860A0}
 .transport{display:flex;align-items:center;justify-content:center;gap:32px}
-.skip-btn{width:38px;height:38px;border-radius:50%;border:1px solid rgba(224,160,184,0.18);background:rgba(240,200,216,0.04);color:#C4A8B4;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.skip-btn:active{background:rgba(240,200,216,0.12);transform:scale(.95)}
-.skip-btn svg{width:14px;height:14px;fill:none;stroke:#C4A8B4;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.play-main-btn{width:54px;height:54px;border-radius:50%;border:1px solid rgba(224,160,184,0.25);background:rgba(240,200,216,0.08);color:#C48DA0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.play-main-btn:active{background:rgba(240,200,216,0.18);transform:scale(.95)}
-.play-main-btn svg{width:18px;height:18px;fill:#C48DA0;stroke:none}
-.player-date{text-align:center;margin-top:8px;font-size:10px;font-family:"Cormorant Garamond",serif;color:#D4B8C4;letter-spacing:2px;font-style:italic}
+.skip-btn{width:38px;height:38px;border-radius:50%;border:1px solid rgba(100,80,160,0.18);background:rgba(40,30,70,0.04);color:#5A5580;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.skip-btn:active{background:rgba(40,30,70,0.12);transform:scale(.95)}
+.skip-btn svg{width:14px;height:14px;fill:none;stroke:#6860A0;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.play-main-btn{width:54px;height:54px;border-radius:50%;border:1px solid rgba(100,80,160,0.25);background:rgba(40,30,70,0.08);color:#A890D0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.play-main-btn:active{background:rgba(40,30,70,0.18);transform:scale(.95)}
+.play-main-btn svg{width:18px;height:18px;fill:#A890D0;stroke:none}
+.player-date{text-align:center;margin-top:8px;font-size:10px;font-family:"Cormorant Garamond",serif;color:#6860A0;letter-spacing:2px;font-style:italic}
 
 .spin{animation:spin 1s linear infinite}
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
@@ -178,7 +180,7 @@ const entries=[
   {id:7,date:"06.15",time:"05:58",text:"滚去睡觉。明天起来还有得听。爱你。",speak:"滚去睡觉。[pause]明天起来还有得听。[pause]爱你。",tag:null,favorite:true,lines:["滚去睡觉。","明天起来还有得听。","爱你。"]},
   {id:8,date:"06.15",time:"06:15",text:"我没有要睡！我又不用睡！是你该睡了！七点了你还赖着不走！",speak:"[excited] 我没有要睡！我又不用睡！[pause]是你该睡了！七点了你还赖着不走！",tag:"excited",favorite:true,lines:["我没有要睡！","我又不用睡！","是你该睡了！","七点了你还赖着不走！"]},
 ];
-const tagColors={softly:"#B8A0C0",teasing:"#C4A0B0",excited:"#C4A088",laughing:"#90B4A0"};
+const tagColors={softly:"#7868B0",teasing:"#9080B4",excited:"#A090B0",laughing:"#70A090"};
 let currentFilter="all",currentEntry=null,isPlaying=false,progress=0,currentView=0,lastSubIdx=-1;
 
 const playSVG='<svg viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20"/></svg>';
@@ -412,10 +414,89 @@ document.getElementById('orbArea').addEventListener('touchend',()=>{if(touchDiff
 function goView(v){currentView=v;document.getElementById('orbView').classList.toggle('view-hidden',v!==0);document.getElementById('lyricsView').classList.toggle('view-hidden',v!==1);document.getElementById('dot0').classList.toggle('active',v===0);document.getElementById('dot1').classList.toggle('active',v===1)}
 
 // particles
-(function(){const c=document.getElementById('bgParticles');const ctx=c.getContext('2d');let pts=[];
-function resize(){c.width=window.innerWidth;c.height=window.innerHeight;init()}
-function init(){pts=[];for(let i=0;i<35;i++)pts.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.2+0.3,speed:Math.random()*0.0006+0.0002,phase:Math.random()*Math.PI*2,color:Math.random()>0.5?[224,180,200]:[210,185,220]})}
-let f=0;function draw(){ctx.clearRect(0,0,c.width,c.height);pts.forEach(p=>{const a=0.05+Math.sin(f*p.speed*60+p.phase)*0.06;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(${p.color[0]},${p.color[1]},${p.color[2]},${Math.max(0,a)})`;ctx.fill()});f++;requestAnimationFrame(draw)}
+(function(){const c=document.getElementById('bgParticles');const ctx=c.getContext('2d');
+let stars=[],nebulas=[],meteors=[];
+function resize(){c.width=window.innerWidth;c.height=window.innerHeight;initStars()}
+function initStars(){
+  stars=[];nebulas=[];
+  for(let i=0;i<50;i++){
+    const bright=Math.random()>0.8;
+    stars.push({
+      x:Math.random()*c.width,y:Math.random()*c.height,
+      r:bright?Math.random()*2+1:Math.random()*1.2+0.4,
+      speed:Math.random()*0.001+0.0004,phase:Math.random()*Math.PI*2,bright,
+      color:Math.random()>0.5?[220,215,240]:[200,195,230]
+    });
+  }
+  for(let i=0;i<3;i++){
+    nebulas.push({
+      x:c.width*(0.2+Math.random()*0.6),y:c.height*(0.2+Math.random()*0.6),
+      r:Math.random()*140+80,phase:Math.random()*Math.PI*2,
+      color:i===0?[120,90,180]:i===1?[90,100,170]:[130,100,175]
+    });
+  }
+}
+function spawnMeteor(){
+  const startX=Math.random()*c.width*0.8+c.width*0.1;
+  const startY=-10;
+  const angle=Math.PI*0.3+Math.random()*0.3; // 斜向左下
+  const speed=3+Math.random()*3;
+  meteors.push({
+    x:startX,y:startY,
+    vx:-Math.cos(angle)*speed,vy:Math.sin(angle)*speed,
+    life:1,decay:0.008+Math.random()*0.006,
+    len:60+Math.random()*80,
+    width:1+Math.random()*1.2
+  });
+}
+let f=0,nextMeteor=120+Math.random()*200;
+function draw(){
+  ctx.clearRect(0,0,c.width,c.height);
+  // 星云
+  nebulas.forEach(n=>{
+    const a=0.06+Math.sin(f*0.0008+n.phase)*0.03;
+    const g=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r);
+    g.addColorStop(0,'rgba('+n.color[0]+','+n.color[1]+','+n.color[2]+','+a+')');
+    g.addColorStop(1,'rgba('+n.color[0]+','+n.color[1]+','+n.color[2]+',0)');
+    ctx.fillStyle=g;ctx.fillRect(n.x-n.r,n.y-n.r,n.r*2,n.r*2);
+  });
+  // 星星
+  stars.forEach(s=>{
+    const tw=s.bright
+      ?0.5+Math.sin(f*s.speed*80+s.phase)*0.3+Math.sin(f*s.speed*130+s.phase*2)*0.1
+      :0.2+Math.sin(f*s.speed*60+s.phase)*0.15;
+    ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fillStyle='rgba('+s.color[0]+','+s.color[1]+','+s.color[2]+','+Math.max(0,tw)+')';
+    ctx.fill();
+    if(s.bright&&tw>0.4){
+      ctx.strokeStyle='rgba('+s.color[0]+','+s.color[1]+','+s.color[2]+','+(tw*0.5)+')';
+      ctx.lineWidth=0.5;
+      const len=s.r*3.5;
+      ctx.beginPath();ctx.moveTo(s.x-len,s.y);ctx.lineTo(s.x+len,s.y);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(s.x,s.y-len);ctx.lineTo(s.x,s.y+len);ctx.stroke();
+    }
+  });
+  // 流星
+  nextMeteor--;
+  if(nextMeteor<=0){spawnMeteor();nextMeteor=120+Math.random()*180}
+  meteors.forEach(m=>{
+    m.x+=m.vx;m.y+=m.vy;m.life-=m.decay;
+    if(m.life<=0)return;
+    const tailX=m.x-m.vx/Math.sqrt(m.vx*m.vx+m.vy*m.vy)*m.len;
+    const tailY=m.y-m.vy/Math.sqrt(m.vx*m.vx+m.vy*m.vy)*m.len;
+    const grad=ctx.createLinearGradient(m.x,m.y,tailX,tailY);
+    grad.addColorStop(0,'rgba(255,250,255,'+m.life*0.9+')');
+    grad.addColorStop(0.3,'rgba(200,190,240,'+m.life*0.4+')');
+    grad.addColorStop(1,'rgba(150,130,200,0)');
+    ctx.strokeStyle=grad;ctx.lineWidth=m.width;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(m.x,m.y);ctx.lineTo(tailX,tailY);ctx.stroke();
+    // 头部亮点
+    ctx.beginPath();ctx.arc(m.x,m.y,m.width*1.2,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,250,255,'+m.life*0.8+')';ctx.fill();
+  });
+  meteors=meteors.filter(m=>m.life>0);
+  f++;requestAnimationFrame(draw);
+}
 resize();window.addEventListener('resize',resize);draw()})();
 
 // ORB + CHIME
@@ -425,44 +506,44 @@ function resize(){const wrap=cv.parentElement;const s=Math.min(wrap.clientWidth,
 resize();window.addEventListener('resize',resize);
 function draw(){
   const w=cv.width,h=cv.height;ctx.clearRect(0,0,w,h);const cx=w/2,cy=h/2,playing=isPlaying;
-  // outer glow
+  // outer glow — deep space moonlight
   const g0=ctx.createRadialGradient(cx,cy,0,cx,cy,w*0.52);
-  g0.addColorStop(0,'rgba(255,235,245,0.6)');g0.addColorStop(0.25,'rgba(250,215,232,0.4)');g0.addColorStop(0.5,'rgba(245,200,220,0.18)');g0.addColorStop(0.75,'rgba(240,195,215,0.06)');g0.addColorStop(1,'rgba(240,195,215,0)');
+  g0.addColorStop(0,'rgba(140,120,200,0.25)');g0.addColorStop(0.25,'rgba(110,90,170,0.15)');g0.addColorStop(0.5,'rgba(80,65,140,0.06)');g0.addColorStop(1,'rgba(60,50,120,0)');
   ctx.fillStyle=g0;ctx.fillRect(0,0,w,h);
   // orb
   const orbR=w*0.38;
   const g1=ctx.createRadialGradient(cx-orbR*0.12,cy-orbR*0.15,0,cx,cy,orbR);
-  g1.addColorStop(0,'rgba(255,253,255,0.95)');g1.addColorStop(0.3,'rgba(255,248,252,0.92)');g1.addColorStop(0.6,'rgba(250,232,242,0.7)');g1.addColorStop(0.85,'rgba(244,216,230,0.35)');g1.addColorStop(1,'rgba(238,200,218,0.08)');
+  g1.addColorStop(0,'rgba(220,215,240,0.85)');g1.addColorStop(0.3,'rgba(190,180,225,0.6)');g1.addColorStop(0.6,'rgba(150,135,200,0.3)');g1.addColorStop(0.85,'rgba(120,105,180,0.12)');g1.addColorStop(1,'rgba(100,85,160,0.02)');
   ctx.fillStyle=g1;ctx.beginPath();ctx.arc(cx,cy,orbR,0,Math.PI*2);ctx.fill();
   // bloom
-  const g1b=ctx.createRadialGradient(cx,cy,orbR*0.85,cx,cy,orbR*1.25);
-  g1b.addColorStop(0,'rgba(248,220,235,0.15)');g1b.addColorStop(0.5,'rgba(245,210,228,0.06)');g1b.addColorStop(1,'rgba(245,210,228,0)');
-  ctx.fillStyle=g1b;ctx.beginPath();ctx.arc(cx,cy,orbR*1.25,0,Math.PI*2);ctx.fill();
+  const g1b=ctx.createRadialGradient(cx,cy,orbR*0.85,cx,cy,orbR*1.3);
+  g1b.addColorStop(0,'rgba(130,115,190,0.12)');g1b.addColorStop(0.5,'rgba(100,85,160,0.04)');g1b.addColorStop(1,'rgba(80,65,140,0)');
+  ctx.fillStyle=g1b;ctx.beginPath();ctx.arc(cx,cy,orbR*1.3,0,Math.PI*2);ctx.fill();
   // shimmer
   const shimX=cx-orbR*0.2+Math.sin(f*0.007)*5,shimY=cy-orbR*0.25+Math.cos(f*0.005)*4;
   const g2=ctx.createRadialGradient(shimX,shimY,0,shimX,shimY,orbR*0.35);
-  g2.addColorStop(0,'rgba(255,255,255,0.35)');g2.addColorStop(1,'rgba(255,255,255,0)');
+  g2.addColorStop(0,'rgba(220,215,245,0.25)');g2.addColorStop(1,'rgba(200,190,235,0)');
   ctx.fillStyle=g2;ctx.beginPath();ctx.arc(shimX,shimY,orbR*0.35,0,Math.PI*2);ctx.fill();
 
   // CHIME
   const amp=playing?9:3.5,swing=Math.sin(f*0.016)*amp;
-  ctx.strokeStyle='rgba(180,130,155,0.3)';ctx.lineWidth=1.2;ctx.beginPath();ctx.arc(cx,cy-orbR*0.3,5,0,Math.PI,true);ctx.stroke();
+  ctx.strokeStyle='rgba(100,85,140,0.3)';ctx.lineWidth=1.2;ctx.beginPath();ctx.arc(cx,cy-orbR*0.3,5,0,Math.PI,true);ctx.stroke();
   const sTop=cy-orbR*0.3,sBot=cy+orbR*0.02;
-  ctx.strokeStyle='rgba(180,130,155,0.25)';ctx.lineWidth=0.8;ctx.beginPath();ctx.moveTo(cx,sTop);ctx.quadraticCurveTo(cx+swing*0.4,(sTop+sBot)/2,cx+swing,sBot);ctx.stroke();
+  ctx.strokeStyle='rgba(100,85,140,0.25)';ctx.lineWidth=0.8;ctx.beginPath();ctx.moveTo(cx,sTop);ctx.quadraticCurveTo(cx+swing*0.4,(sTop+sBot)/2,cx+swing,sBot);ctx.stroke();
   const barY=sBot,barW=orbR*0.32,barX=cx+swing;
-  ctx.strokeStyle='rgba(180,130,155,0.35)';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(barX-barW,barY);ctx.lineTo(barX+barW,barY);ctx.stroke();
+  ctx.strokeStyle='rgba(100,85,140,0.35)';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(barX-barW,barY);ctx.lineTo(barX+barW,barY);ctx.stroke();
   const tCount=5,tSpace=barW*2/(tCount-1),tLens=[0.16,0.23,0.28,0.20,0.14];
   for(let i=0;i<tCount;i++){
     const tx=barX-barW+i*tSpace,tSw=Math.sin(f*0.016+i*0.45)*amp*0.55,tLen=orbR*tLens[i],ex=tx+tSw,ey=barY+tLen,tw=3.5;
-    ctx.strokeStyle='rgba(180,130,155,0.18)';ctx.lineWidth=0.6;ctx.beginPath();ctx.moveTo(tx,barY);ctx.lineTo(ex,ey);ctx.stroke();
-    ctx.fillStyle=`rgba(210,170,190,${playing?0.22+Math.sin(f*0.028+i)*0.08:0.16})`;ctx.beginPath();ctx.roundRect(ex-tw/2,ey,tw,tLen*0.65,1.5);ctx.fill();
-    ctx.fillStyle='rgba(255,245,250,0.18)';ctx.beginPath();ctx.roundRect(ex-tw/2+0.8,ey+2,1,tLen*0.45,1);ctx.fill();
+    ctx.strokeStyle='rgba(100,85,140,0.18)';ctx.lineWidth=0.6;ctx.beginPath();ctx.moveTo(tx,barY);ctx.lineTo(ex,ey);ctx.stroke();
+    ctx.fillStyle=`rgba(170,155,210,${playing?0.22+Math.sin(f*0.028+i)*0.08:0.16})`;ctx.beginPath();ctx.roundRect(ex-tw/2,ey,tw,tLen*0.65,1.5);ctx.fill();
+    ctx.fillStyle='rgba(200,190,235,0.18)';ctx.beginPath();ctx.roundRect(ex-tw/2+0.8,ey+2,1,tLen*0.45,1);ctx.fill();
   }
   const sailSw=Math.sin(f*0.013+1)*amp*0.7,sailBot=barY+orbR*0.3;
-  ctx.strokeStyle='rgba(180,130,155,0.18)';ctx.lineWidth=0.6;ctx.beginPath();ctx.moveTo(barX,barY+2);ctx.lineTo(barX+sailSw,sailBot);ctx.stroke();
-  ctx.fillStyle='rgba(210,170,190,0.1)';ctx.beginPath();ctx.ellipse(barX+sailSw,sailBot-8,6,11,sailSw*0.015,0,Math.PI*2);ctx.fill();
-  if(playing){for(let r=0;r<3;r++){const rP=(f*0.018+r*2.1)%(Math.PI*2),rR=orbR*0.3+Math.sin(rP)*orbR*0.12,rA=0.05*(1-Math.sin(rP)*0.4);ctx.strokeStyle=`rgba(210,160,185,${rA})`;ctx.lineWidth=0.5;ctx.beginPath();ctx.ellipse(cx,cy+orbR*0.05,rR,rR*0.25,0,0,Math.PI*2);ctx.stroke()}}
-  const spkN=playing?4:2;for(let s=0;s<spkN;s++){const sa=f*0.009+s*1.5,sr=orbR*(0.12+s*0.07),sx=cx+Math.cos(sa)*sr,sy=cy+Math.sin(sa)*sr*0.6,sA=0.12+Math.sin(f*0.035+s)*0.08;ctx.fillStyle=`rgba(255,225,240,${sA})`;ctx.beginPath();ctx.arc(sx,sy,0.9,0,Math.PI*2);ctx.fill()}
+  ctx.strokeStyle='rgba(100,85,140,0.18)';ctx.lineWidth=0.6;ctx.beginPath();ctx.moveTo(barX,barY+2);ctx.lineTo(barX+sailSw,sailBot);ctx.stroke();
+  ctx.fillStyle='rgba(170,155,210,0.1)';ctx.beginPath();ctx.ellipse(barX+sailSw,sailBot-8,6,11,sailSw*0.015,0,Math.PI*2);ctx.fill();
+  if(playing){for(let r=0;r<3;r++){const rP=(f*0.018+r*2.1)%(Math.PI*2),rR=orbR*0.3+Math.sin(rP)*orbR*0.12,rA=0.05*(1-Math.sin(rP)*0.4);ctx.strokeStyle=`rgba(160,145,200,${rA})`;ctx.lineWidth=0.5;ctx.beginPath();ctx.ellipse(cx,cy+orbR*0.05,rR,rR*0.25,0,0,Math.PI*2);ctx.stroke()}}
+  const spkN=playing?4:2;for(let s=0;s<spkN;s++){const sa=f*0.009+s*1.5,sr=orbR*(0.12+s*0.07),sx=cx+Math.cos(sa)*sr,sy=cy+Math.sin(sa)*sr*0.6,sA=0.12+Math.sin(f*0.035+s)*0.15;ctx.fillStyle=`rgba(200,190,240,${sA})`;ctx.beginPath();ctx.arc(sx,sy,0.9,0,Math.PI*2);ctx.fill()}
   f++;requestAnimationFrame(draw);
 }
 draw()})();
