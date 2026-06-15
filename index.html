@@ -325,8 +325,16 @@ function toggleFav(id){
 function getActiveIdx(){
   if(!currentEntry||!currentEntry.lines)return 0;
   const dur=audio&&audio.duration?audio.duration:10;
-  const perLine=dur/currentEntry.lines.length;
-  return Math.min(Math.floor(progress/perLine),currentEntry.lines.length-1);
+  const lines=currentEntry.lines;
+  // 按字数加权分配时间
+  const lengths=lines.map(l=>l.length||1);
+  const total=lengths.reduce((a,b)=>a+b,0);
+  let elapsed=0;
+  for(let i=0;i<lines.length;i++){
+    elapsed+=lengths[i]/total*dur;
+    if(progress<elapsed)return i;
+  }
+  return lines.length-1;
 }
 
 function updateActiveLyricFromTime(){
