@@ -117,13 +117,23 @@ body{background:linear-gradient(180deg,#0E0B1A 0%,#151030 40%,#100D22 100%);colo
 
 .spin{animation:spin 1s linear infinite}
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+.refresh-btn{
+  position:absolute;right:20px;top:52px;
+  background:none;border:1px solid rgba(100,80,160,0.2);
+  color:#6860A0;font-size:14px;cursor:pointer;
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .3s;
+}
+.refresh-btn:active{transform:rotate(180deg);background:rgba(100,80,160,0.1)}
 </style>
 </head>
 <body>
 <canvas id="bgParticles"></canvas>
 
 <div class="page" id="listPage">
-  <div class="list-header"><div class="list-logo">Chime</div><p class="list-sub">pour toi seule · voice archive</p><div class="list-divider"></div></div>
+  <div class="list-header" style="position:relative"><button class="refresh-btn" onclick="loadEntries()">↻</button><div class="list-logo">Chime</div><p class="list-sub">pour toi seule · voice archive</p><div class="list-divider"></div></div>
   <div class="filters"><button class="filter-btn active" id="filterAll" onclick="setFilter('all')">Tout</button><button class="filter-btn" id="filterFav" onclick="setFilter('favorites')">Favoris</button></div>
   <div class="stats" id="stats"></div>
   <div class="list" id="list"></div>
