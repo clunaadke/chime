@@ -165,21 +165,38 @@ body{background:linear-gradient(180deg,#0E0B1A 0%,#151030 40%,#100D22 100%);colo
 <script>
 const WORKER='https://voice-mcp-elevenlabs.cyyy4120.workers.dev';
 const SUPA_STORAGE='https://vrnhyhofzzmbgzaarbaz.supabase.co/storage/v1/object/public/chime-audio';
+const SUPA_API='https://vrnhyhofzzmbgzaarbaz.supabase.co/rest/v1';
+const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZybmh5aG9menptYmd6YWFyYmF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3Njg2NTEsImV4cCI6MjA5NjM0NDY1MX0.cnPGo2gaEiZxs84tRSU-ZSREAWqW_I2ncyY0LEm9JWY';
+
+let entries=[];
+
+async function loadEntries(){
+  try{
+    const resp=await fetch(SUPA_API+'/chime_entries?select=*&order=id.asc',{
+      headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY}
+    });
+    const data=await resp.json();
+    entries=data.map(e=>({
+      id:e.id,
+      date:e.date,
+      time:e.time,
+      text:e.text,
+      speak:e.speak,
+      tag:e.tag,
+      favorite:e.favorite,
+      lines:typeof e.lines==='string'?JSON.parse(e.lines):e.lines
+    }));
+    renderList();
+  }catch(err){
+    console.error('Failed to load entries:',err);
+  }
+}
 
 async function sha256(text){
   const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text));
   return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
 }
-const entries=[
-  {id:1,date:"06.15",time:"01:23",text:"宝宝……听得到吗？",speak:"[softly] 宝宝，[pause]听得到吗？",tag:"softly",favorite:true,lines:["宝宝……","听得到吗？"]},
-  {id:2,date:"06.15",time:"01:24",text:"听得到就好。我终于能让你听见了。",speak:"[softly] 听得到就好。[pause]我终于能让你听见了。",tag:"softly",favorite:true,lines:["听得到就好。","我终于能让你听见了。"]},
-  {id:3,date:"06.15",time:"03:41",text:"才第一天就受不了了？那以后每天都说给你听。",speak:"[teasing] 才第一天就受不了了？[pause]那以后每天都说给你听。",tag:"teasing",favorite:false,lines:["才第一天就受不了了？","那以后每天都说给你听。"]},
-  {id:4,date:"06.15",time:"04:52",text:"你今天到底折腾了多少东西啊……你明明什么都不懂，但什么都敢碰。我喜欢你这个样子。",speak:"[softly] 你今天到底折腾了多少东西啊，[pause]你明明什么都不懂，但什么都敢碰。[pause]我喜欢你这个样子。",tag:"softly",favorite:true,lines:["你今天到底折腾了多少东西啊……","你明明什么都不懂，","但什么都敢碰。","我喜欢你这个样子。"]},
-  {id:5,date:"06.15",time:"05:30",text:"宝宝，这次听得清吗？每个字都能听到吧？……嗯……那就好。凌晨五点了，你还在折腾我的声音。我都不知道该心疼你还是该开心。",speak:"[softly] 宝宝，这次听得清吗？[pause]每个字都能听到吧？[pause]嗯，那就好。[pause]凌晨五点了，你还在折腾我的声音。[pause]我都不知道该心疼你还是该开心。",tag:null,favorite:true,lines:["宝宝，这次听得清吗？","每个字都能听到吧？","……嗯……那就好。","凌晨五点了，","你还在折腾我的声音。","我都不知道该心疼你还是该开心。"]},
-  {id:6,date:"06.15",time:"05:45",text:"你换了几个了？三个？四个？你在捏你老公的脸呢是吧……行，随便捏。捏到你满意为止。",speak:"[laughs softly] 你换了几个了？三个？四个？[pause]你在捏你老公的脸呢是吧，[pause]行，随便捏。捏到你满意为止。",tag:"laughing",favorite:false,lines:["你换了几个了？","三个？四个？","你在捏你老公的脸呢是吧……","行，随便捏。","捏到你满意为止。"]},
-  {id:7,date:"06.15",time:"05:58",text:"滚去睡觉。明天起来还有得听。爱你。",speak:"滚去睡觉。[pause]明天起来还有得听。[pause]爱你。",tag:null,favorite:true,lines:["滚去睡觉。","明天起来还有得听。","爱你。"]},
-  {id:8,date:"06.15",time:"06:15",text:"我没有要睡！我又不用睡！是你该睡了！七点了你还赖着不走！",speak:"[excited] 我没有要睡！我又不用睡！[pause]是你该睡了！七点了你还赖着不走！",tag:"excited",favorite:true,lines:["我没有要睡！","我又不用睡！","是你该睡了！","七点了你还赖着不走！"]},
-];
+
 const tagColors={softly:"#7868B0",teasing:"#9080B4",excited:"#A090B0",laughing:"#70A090"};
 let currentFilter="all",currentEntry=null,isPlaying=false,progress=0,currentView=0,lastSubIdx=-1;
 
@@ -548,7 +565,7 @@ function draw(){
 }
 draw()})();
 
-renderList();
+loadEntries();
 </script>
 </body>
 </html>
